@@ -1,2 +1,48 @@
-<b>Park</b> Sinchaisri<br>
--- It's a DataUSA party! --
+<!doctype html>
+<html>
+	<head>
+		<title>D3Plus</title>
+		<!-- load in JS file , full min includes d3 for us -->
+		<script src="https://d3plus.org/js/d3plus.full.min.js"></script>
+		<style>
+				.greendot {
+					color: green;
+				}
+		</style>
+
+	</head>
+
+	<body>
+	<h1>Hello Deloitte<span class="greendot">.</span></h1>
+	--- It's a DataUSA party!!! ---<br>
+
+	<div id="viz"></div>
+
+	</body>
+
+	<script>
+	console.log("Why are you here, Park?")
+	var data = [1, 5, 100, 200];
+	console.log("this is our data", data);
+	var data2 = [
+		{"Population": 123, "Income": 1123,"name": "Park", "value": 55},
+		{"Population": 345, "Income": 4452,"name": "Alex", "value": 25},
+		{"Population": 133, "Income": 12,"name": "Miguel", "value": 20}
+
+	];
+	console.log("this is our data", data2);
+
+	var myViz = d3plus.viz()
+				.container("#viz")
+				.type("scatter")
+				.data(data2)
+				.id("name")
+				.size("value")
+				.x("Population")
+				.y("Income")
+				.color("value")
+				.draw();
+	</script>
+
+
+</html>
