@@ -21,6 +21,17 @@
 	</body>
 
 	<script>
+
+	function datafold(json) {
+		var return_data = json.data.map(function(data) {
+			return json.headers.reduce(function(obj, header, i) {
+				obj[header] = data[i];
+				return obj;
+			}, {});
+		});
+		console.log(return_data)
+		return return_data
+	}
 	console.log("Why are you here, Park?")
 	var data = [1, 5, 100, 200];
 	console.log("this is our data", data);
@@ -35,12 +46,23 @@
 	var myViz = d3plus.viz()
 				.container("#viz")
 				.type("scatter")
-				.data(data2)
-				.id("name")
-				.size("value")
-				.x("Population")
-				.y("Income")
-				.color("value")
+				.data("http://api.datausa.io/api/?show=geo&sumlevel=state&required=grads_hawaiian,grads_men,grads_women,geo&year=latest", datafold)
+				.id("geo")
+				.size("grads_hawaiian")
+				.x("grads_men")
+				.y("grads_women")
+				.color( function(d) {
+					if (d.grads_hawaiian > 1000) {
+						return "red";
+					} else { return "orange"; }
+				})
+				.tooltip(["grads_hawaiian", "grads_men", "grads_women"])
+				.format({
+					"text": function(text) {
+						if (text.indexOf("grads_") == 0) return d3plus.string.title(text.split("_")[1]);
+						return text;
+					}
+				})
 				.draw();
 	</script>
 
