@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+	<head>
+		<title>D3Plus</title>
+		<!-- load in JS file , full min includes d3 for us -->
+		<script src="https://d3plus.org/js/d3plus.full.min.js"></script>
+		<style>
+				.greendot {
+					color: green;
+				}
+		</style>
+
+	</head>
+
+	<body>
+	<h1>Hello Deloitte<span class="greendot">.</span></h1>
+	--- It's a DataUSA party!!! ---<br>
+
+	<div id="viz"></div>
+
+	</body>
+
+	<script>
+
+	function datafold(json) {
+		var return_data = json.data.map(function(data) {
+			return json.headers.reduce(function(obj, header, i) {
+				obj[header] = data[i];
+				return obj;
+			}, {});
+		});
+		console.log(return_data)
+		return return_data
+	}
+	console.log("Why are you here, Park?")
+	var data = [1, 5, 100, 200];
+	console.log("this is our data", data);
+	var data2 = [
+		{"Population": 123, "Income": 1123,"name": "Park", "value": 55},
+		{"Population": 345, "Income": 4452,"name": "Alex", "value": 25},
+		{"Population": 133, "Income": 12,"name": "Miguel", "value": 20}
+
+	];
+	console.log("this is our data", data2);
+
+	var myViz = d3plus.viz()
+				.container("#viz")
+				.type("scatter")
+				.data("http://api.datausa.io/api/?show=geo&sumlevel=state&required=grads_hawaiian,grads_men,grads_women,geo&year=latest", datafold)
+				.id("geo")
+				.size("grads_hawaiian")
+				.x("grads_men")
+				.y("grads_women")
+				.color( function(d) {
+					if (d.grads_hawaiian > 1000) {
+						return "red";
+					} else { return "orange"; }
+				})
+				.tooltip(["grads_hawaiian", "grads_men", "grads_women"])
+				.format({
+					"text": function(text) {
+						if (text.indexOf("grads_") == 0) return d3plus.string.title(text.split("_")[1]);
+						return text;
+					}
+				})
+				.draw();
+	</script>
+
+
+</html>
